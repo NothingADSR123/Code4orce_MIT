@@ -3,13 +3,24 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const expenseRoutes = require('./routes/expenseRoutes');
+const budgetRoutes = require('./routes/budgetRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 dotenv.config();
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// API routes
+app.use('/api/auth', authRoutes);
 app.use('/api', expenseRoutes);
+app.use('/api', budgetRoutes);
+
+// Basic health check route
+app.get('/', (req, res) => {
+  res.send('Finance Assistant API is running');
+});
 
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI, {
