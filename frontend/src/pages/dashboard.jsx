@@ -5,6 +5,7 @@ import {
   PieChart, Pie, Cell, LineChart, Line, Legend
 } from 'recharts';
 import Sidebar from '../components/Sidebar';
+import { motion } from 'framer-motion';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -91,193 +92,172 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex">
-      <Sidebar />
-      
-      <div className="flex-1 ml-64"> {/* Adjust margin to match sidebar width */}
-        {/* Navigation Bar */}
-        <nav className="bg-white shadow-lg">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="flex justify-between h-16">
-              <div className="flex items-center">
-                <h1 className="text-2xl font-bold text-indigo-600">MindSpend</h1>
-              </div>
-              <div className="flex items-center space-x-4">
-                <button
-                  onClick={() => setActiveTab('overview')}
-                  className={`px-4 py-2 text-sm font-medium rounded-md ${
-                    activeTab === 'overview'
-                      ? 'bg-sky-600 text-white'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  Overview
-                </button>
-                <button
-                  onClick={() => setActiveTab('spending')}
-                  className={`px-4 py-2 text-sm font-medium rounded-md ${
-                    activeTab === 'spending'
-                      ? 'bg-sky-600 text-white'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  Spending
-                </button>
-                <button
-                  onClick={() => setActiveTab('savings')}
-                  className={`px-4 py-2 text-sm font-medium rounded-md ${
-                    activeTab === 'savings'
-                      ? 'bg-sky-600 text-white'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  Savings
-                </button>
-                <button
-                  onClick={handleLogout}
-                  className="ml-4 px-4 py-2 text-sm font-medium text-white bg-sky-600 rounded-md hover:bg-sky-700"
-                >
-                  Logout
-                </button>
-              </div>
-            </div>
-          </div>
-        </nav>
-
-        {/* Main Content */}
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          {/* Welcome Message */}
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-800 welcome-font">Welcome back</h2>
-            <p className="text-gray-600">Here's your financial overview for this month</p>
-          </div>
-
-          {/* Financial Overview Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-lg font-medium text-gray-900">Monthly Spending</h3>
-              <p className="mt-2 text-3xl font-bold text-sky-600">${userData.currentMonth.spending}</p>
-              <p className="text-sm text-gray-500">
-                {userData.currentMonth.previousMonthSpendingChange >= 0 ? '+' : ''}
-                {userData.currentMonth.previousMonthSpendingChange}% from last month
-              </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-lg font-medium text-gray-900">Monthly Savings</h3>
-              <p className="mt-2 text-3xl font-bold text-sky-600">${userData.currentMonth.savings}</p>
-              <p className="text-sm text-gray-500">
-                {userData.currentMonth.previousMonthSavingsChange >= 0 ? '+' : ''}
-                {userData.currentMonth.previousMonthSavingsChange}% from last month
-              </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-lg font-medium text-gray-900">Financial Health</h3>
-              <p className="mt-2 text-3xl font-bold text-purple-600">{userData.financialHealth}/100</p>
-              <p className="text-sm text-gray-500">
-                {userData.financialHealth > 80 ? 'Excellent' : 
-                 userData.financialHealth > 60 ? 'Good' : 
-                 userData.financialHealth > 40 ? 'Fair' : 'Needs attention'}
-              </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-lg font-medium text-gray-900">Savings Rate</h3>
-              <p className="mt-2 text-3xl font-bold text-blue-600">{userData.currentMonth.savingsRate}%</p>
-              <p className="text-sm text-gray-500">
-                {userData.currentMonth.savingsRate > 30 ? 'Above average' : 
-                 userData.currentMonth.savingsRate > 20 ? 'Average' : 'Below average'}
-              </p>
-            </div>
-          </div>
-
-          {/* Charts Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            {/* Monthly Spending & Savings Trend */}
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Monthly Trends</h3>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={userData.monthlyData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip formatter={(value) => [`$${value}`, '']} />
-                    <Legend />
-                    <Line type="monotone" dataKey="spending" stroke="#4F46E5" name="Spending" />
-                    <Line type="monotone" dataKey="savings" stroke="#10B981" name="Savings" />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-
-            {/* Expenditure Distribution */}
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Expenditure Distribution</h3>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={userData.expenditureData}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                    >
-                      {userData.expenditureData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip formatter={(value) => [`${value}%`, '']} />
-                    <Legend />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-          </div>
-
-          {/* Recent Transactions */}
-          <div className="bg-white p-6 rounded-lg shadow">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-medium text-gray-900">Recent Transactions</h3>
-              <button className="text-sm text-white bg-sky-600 hover:bg-sky-700 px-4 py-2 rounded-md">View All</button>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {userData.recentTransactions.map((transaction) => (
-                    <tr key={transaction.id}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {new Date(transaction.date).toLocaleDateString()}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {transaction.description}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {transaction.category}
-                      </td>
-                      <td className={`px-6 py-4 whitespace-nowrap text-sm ${
-                        transaction.amount >= 0 ? 'text-green-600' : 'text-red-600'
-                      }`}>
-                        {transaction.amount >= 0 ? '+$' : '-$'}{Math.abs(transaction.amount)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen bg-gray-100 p-6">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900">Financial Dashboard</h1>
+        <p className="text-gray-600">Your complete financial overview</p>
       </div>
+
+      {/* Financial Overview Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <motion.div 
+          className="bg-white rounded-lg shadow-md p-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <h3 className="text-lg font-medium text-gray-900">Monthly Spending</h3>
+          <p className="mt-2 text-3xl font-bold text-[#4461F2]">${userData?.currentMonth.spending}</p>
+          <p className="text-sm text-gray-500">
+            {userData?.currentMonth.previousMonthSpendingChange >= 0 ? '+' : ''}
+            {userData?.currentMonth.previousMonthSpendingChange}% from last month
+          </p>
+        </motion.div>
+        <motion.div 
+          className="bg-white rounded-lg shadow-md p-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+        >
+          <h3 className="text-lg font-medium text-gray-900">Monthly Savings</h3>
+          <p className="mt-2 text-3xl font-bold text-[#4461F2]">${userData?.currentMonth.savings}</p>
+          <p className="text-sm text-gray-500">
+            {userData?.currentMonth.previousMonthSavingsChange >= 0 ? '+' : ''}
+            {userData?.currentMonth.previousMonthSavingsChange}% from last month
+          </p>
+        </motion.div>
+        <motion.div 
+          className="bg-white rounded-lg shadow-md p-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
+        >
+          <h3 className="text-lg font-medium text-gray-900">Financial Health</h3>
+          <p className="mt-2 text-3xl font-bold text-[#4461F2]">{userData?.financialHealth}/100</p>
+          <p className="text-sm text-gray-500">
+            {userData?.financialHealth > 80 ? 'Excellent' : 
+             userData?.financialHealth > 60 ? 'Good' : 
+             userData?.financialHealth > 40 ? 'Fair' : 'Needs attention'}
+          </p>
+        </motion.div>
+        <motion.div 
+          className="bg-white rounded-lg shadow-md p-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.3 }}
+        >
+          <h3 className="text-lg font-medium text-gray-900">Savings Rate</h3>
+          <p className="mt-2 text-3xl font-bold text-[#4461F2]">{userData?.currentMonth.savingsRate}%</p>
+          <p className="text-sm text-gray-500">
+            {userData?.currentMonth.savingsRate > 30 ? 'Above average' : 
+             userData?.currentMonth.savingsRate > 20 ? 'Average' : 'Below average'}
+          </p>
+        </motion.div>
+      </div>
+
+      {/* Charts Section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <motion.div 
+          className="bg-white rounded-lg shadow-md p-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <h3 className="text-xl font-semibold mb-4">Monthly Trends</h3>
+          <div className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={userData?.monthlyData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip formatter={(value) => [`$${value}`, '']} />
+                <Legend />
+                <Line type="monotone" dataKey="spending" stroke="#4461F2" name="Spending" />
+                <Line type="monotone" dataKey="savings" stroke="#10B981" name="Savings" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </motion.div>
+
+        <motion.div 
+          className="bg-white rounded-lg shadow-md p-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+        >
+          <h3 className="text-xl font-semibold mb-4">Expenditure Distribution</h3>
+          <div className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={userData?.expenditureData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                >
+                  {userData?.expenditureData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip formatter={(value) => [`${value}%`, '']} />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Recent Transactions */}
+      <motion.div 
+        className="bg-white rounded-lg shadow-md p-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-xl font-semibold">Recent Transactions</h3>
+          <button className="px-4 py-2 bg-[#4461F2] text-white rounded-md hover:bg-blue-600 transition-colors">
+            View All
+          </button>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {userData?.recentTransactions.map((transaction) => (
+                <tr key={transaction.id}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {new Date(transaction.date).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {transaction.description}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {transaction.category}
+                  </td>
+                  <td className={`px-6 py-4 whitespace-nowrap text-sm ${
+                    transaction.amount >= 0 ? 'text-green-600' : 'text-red-600'
+                  }`}>
+                    {transaction.amount >= 0 ? '+$' : '-$'}{Math.abs(transaction.amount)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </motion.div>
     </div>
   );
 };

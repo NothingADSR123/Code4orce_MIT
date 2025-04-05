@@ -52,16 +52,19 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-cover bg-center" 
-         style={{ 
-           backgroundImage: 'url("https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80")',
-           backgroundSize: 'cover',
-           backgroundPosition: 'center',
-           backgroundRepeat: 'no-repeat'
-         }}>
-      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-      
-      <div className="relative z-10 w-full max-w-md px-6 py-8 bg-white bg-opacity-90 rounded-lg shadow-xl">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      <div 
+        className="absolute inset-0 w-full h-full" 
+        style={{
+          backgroundImage: 'url("https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+          filter: 'brightness(0.8)'
+        }}
+      />
+      <div className="relative z-10 w-full max-w-md px-6 py-8 bg-white bg-opacity-90 rounded-lg shadow-xl mx-4">
         <div className="text-center mb-8">
           <h2 className="text-4xl font-bold text-gray-900 tracking-tight welcome-font italic">
             Welcome to
@@ -89,8 +92,8 @@ const Login = () => {
                 value={formData.email}
                 onChange={handleChange}
                 className={`appearance-none block w-full px-3 py-2 border ${
-                  errors.email ? 'border-red-300' : 'border-gray-300'
-                } rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+                  errors.email ? 'border-red-300' : 'border-blue-300'
+                } rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-black bg-blue-50`}
               />
               {errors.email && (
                 <p className="mt-2 text-sm text-red-600">{errors.email}</p>
@@ -112,8 +115,8 @@ const Login = () => {
                 value={formData.password}
                 onChange={handleChange}
                 className={`appearance-none block w-full px-3 py-2 border ${
-                  errors.password ? 'border-red-300' : 'border-gray-300'
-                } rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+                  errors.password ? 'border-red-300' : 'border-blue-300'
+                } rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-black bg-blue-50`}
               />
               {errors.password && (
                 <p className="mt-2 text-sm text-red-600">{errors.password}</p>
