@@ -161,12 +161,9 @@ const Sidebar = () => {
         boxShadow: '4px 0 6px -1px rgba(0, 0, 0, 0.1), 2px 0 4px -1px rgba(0, 0, 0, 0.06)'
       }}
     >
-      {/* Animated Background Pattern */}
       <FinancePattern />
 
-      {/* Content Container */}
       <div className="relative z-10 h-full">
-        {/* Toggle Button */}
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
@@ -176,7 +173,7 @@ const Sidebar = () => {
           <motion.svg
             animate={{ rotate: isCollapsed ? 180 : 0 }}
             transition={{ duration: 0.3 }}
-            className="w-4 h-4"
+            className="w-4 h-4 text-white" // Added text-white
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -190,7 +187,6 @@ const Sidebar = () => {
           </motion.svg>
         </motion.button>
 
-        {/* Menu Items */}
         <nav className="mt-8">
           <AnimatePresence>
             {menuItems.map((item) => {
@@ -202,21 +198,23 @@ const Sidebar = () => {
                   className={`flex items-center px-4 py-3 transition-colors duration-200 relative ${
                     isActive
                       ? 'bg-gray-900 bg-opacity-60 text-white'
-                      : 'text-gray-300 hover:bg-gray-700 hover:bg-opacity-60 hover:text-white'
+                      : 'text-white hover:bg-gray-700 hover:bg-opacity-60'
                   }`}
                 >
                   <motion.div
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
-                    className="flex items-center"
+                    className="flex items-center text-white" // Added text-white
                   >
-                    {item.icon}
+                    <div className="text-white"> {/* Wrapper for icon */}
+                      {item.icon}
+                    </div>
                     <motion.span
                       variants={menuItemVariants}
                       initial="expanded"
                       animate={isCollapsed ? "collapsed" : "expanded"}
                       exit="collapsed"
-                      className="ml-3 text-sm font-medium whitespace-nowrap"
+                      className="ml-3 text-sm font-medium whitespace-nowrap text-white" // Added text-white
                     >
                       {item.name}
                     </motion.span>
@@ -224,7 +222,7 @@ const Sidebar = () => {
                   {isActive && (
                     <motion.div
                       layoutId="activeIndicator"
-                      className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500"
+                      className="absolute left-0 top-0 bottom-0 w-1 bg-white" // Changed to bg-white
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}

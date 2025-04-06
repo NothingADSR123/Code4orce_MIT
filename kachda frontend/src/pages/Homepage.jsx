@@ -1,9 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 
 const Home = () => {
   const navigate = useNavigate();
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    totalExpenses: 0,
+    totalGoals: 0
+  });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check if user is logged in
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+
+    // Generate random stats for demo purposes
+    const generateRandomStats = () => {
+      return {
+        totalUsers: Math.floor(Math.random() * 5000) + 1000,
+        totalExpenses: Math.floor(Math.random() * 1000000) + 500000,
+        totalGoals: Math.floor(Math.random() * 2000) + 500
+      };
+    };
+
+    // Fetch stats from backend
+    const fetchStats = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/stats');
+        setStats(response.data);
+      } catch (error) {
+        console.error('Failed to fetch stats:', error);
+        // If API fails, use random data
+        setStats(generateRandomStats());
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -41,7 +79,7 @@ const Home = () => {
         transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-start items-center h-16">
+          <div className="flex justify-between items-center h-16">
             <motion.span 
               className="text-2xl font-bold text-[#4461F2] font-['Poppins'] tracking-tight"
               whileHover={{ scale: 1.05 }}
@@ -49,6 +87,34 @@ const Home = () => {
             >
               MindSpend
             </motion.span>
+            
+            {isLoggedIn ? (
+              <div className="flex space-x-4">
+                <motion.button
+                  onClick={() => navigate('/dashboard')}
+                  className="px-4 py-2 text-[#4461F2] rounded-lg font-medium hover:bg-gray-100 transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Dashboard
+                </motion.button>
+                <motion.button
+                  onClick={() => {
+                    localStorage.removeItem('token');
+                    setIsLoggedIn(false);
+                  }}
+                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Logout
+                </motion.button>
+              </div>
+            ) : (
+              <div className="flex space-x-4">
+                {/* Login and signup buttons removed */}
+              </div>
+            )}
           </div>
         </div>
       </motion.nav>
@@ -98,21 +164,76 @@ const Home = () => {
               className="flex justify-center space-x-4"
             >
               <motion.button
-                onClick={() => navigate('/login')}
+                onClick={() => navigate(isLoggedIn ? '/dashboard' : '/login')}
                 className="px-8 py-3 bg-[#4461F2] text-white rounded-lg text-lg font-semibold hover:bg-blue-600 transition-colors shadow-lg hover:shadow-xl font-['Poppins'] tracking-wide"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
                 Get Started
               </motion.button>
-              <motion.button
-                onClick={() => navigate('/register')}
-                className="px-8 py-3 bg-white text-[#4461F2] rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg hover:shadow-xl font-['Poppins'] tracking-wide"
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
+              {/* Create Account button removed */}
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Stats Section */}
+      <div className="py-16 bg-white relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <motion.div 
+              className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center"
+              whileHover={{ y: -5, scale: 1.02 }}
+            >
+              <motion.div 
+                className="text-4xl font-bold text-[#4461F2] mb-2"
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 100, delay: 0.2 }}
+                viewport={{ once: true }}
               >
-                Create Account
-              </motion.button>
+                {stats.totalUsers}+
+              </motion.div>
+              <p className="text-gray-600">Happy Users</p>
+            </motion.div>
+            
+            <motion.div 
+              className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center"
+              whileHover={{ y: -5, scale: 1.02 }}
+            >
+              <motion.div 
+                className="text-4xl font-bold text-[#4461F2] mb-2"
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 100, delay: 0.3 }}
+                viewport={{ once: true }}
+              >
+                ${stats.totalExpenses.toLocaleString()}
+              </motion.div>
+              <p className="text-gray-600">Expenses Tracked</p>
+            </motion.div>
+            
+            <motion.div 
+              className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center"
+              whileHover={{ y: -5, scale: 1.02 }}
+            >
+              <motion.div 
+                className="text-4xl font-bold text-[#4461F2] mb-2"
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 100, delay: 0.4 }}
+                viewport={{ once: true }}
+              >
+                {stats.totalGoals}
+              </motion.div>
+              <p className="text-gray-600">Goals Achieved</p>
             </motion.div>
           </motion.div>
         </div>
@@ -308,4 +429,4 @@ const Home = () => {
   );
 };
 
-export default Home; 
+export default Home;

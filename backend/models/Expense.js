@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
 
-const expenseSchema = new mongoose.Schema({
-  userId: { type: String, required: true },
-  amount: { type: Number, required: true },
-  category: { type: String, required: true },
-  date: { type: Date, required: true },
-  type: { type: String, enum: ['need', 'want'], required: true },
-  notes: { type: String }
+const ExpenseSchema = new mongoose.Schema({
+  userId: String,               // From the JWT auth
+  title: String,                // Title of the expense
+  amount: Number,
+  date: String,                 // Format: "YYYY-MM-DD"
+  category: {                   // One of the allowed options
+    type: String,
+    enum: ["food", "home", "entertainment", "shopping", "transportation"]
+  }
 });
 
-module.exports = mongoose.model('Expense', expenseSchema);
+module.exports = mongoose.model('Expense', ExpenseSchema);

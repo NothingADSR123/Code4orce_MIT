@@ -1,23 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const Expense = require('../models/Expense');
-const Budget = require('../models/Budget');
 const authCheck = require('../middleware/authCheck');
-const { classifyExpense } = require('../services/expenseClassifier');
-const { sendBudgetAlert } = require('../utils/emailService');
-const admin = require('../utils/firebase');
 
 // Get all expenses for a user
 router.get('/expenses', authCheck, async (req, res) => {
   try {
-    const userId = req.query.userId;
+    const userId = req.user.uid;
+    const expenses = await Expense.find({ userId })
+      .sort({ date: -1 }); // Sort by date descending
     
-    // Verify that the authenticated user is requesting their own data
-    if (req.user.uid !== userId) {
-      return res.status(403).json({ message: 'Unauthorized access to this user\'s data' });
-    }
-    
-    const expenses = await Expense.find({ userId }).sort({ date: -1 });
     res.json(expenses);
   } catch (error) {
     console.error('Error fetching expenses:', error);
@@ -26,29 +18,25 @@ router.get('/expenses', authCheck, async (req, res) => {
 });
 
 // Add a new expense
-router.post('/add-expense', authCheck, async (req, res) => {
+router.post('/expenses', authCheck, async (req, res) => {
   try {
-    const { amount, category, date, notes } = req.body;
+    const { title, amount, date, category } = req.body;
     const userId = req.user.uid;
-    
-    // Classify the expense as need or want
-    const type = classifyExpense(category);
-    
-    // Create and save the expense
+
+    // Validate required fields
+    if (!title || !amount || !date || !category) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+
     const expense = new Expense({
       userId,
+      title,
       amount,
-      category,
-      date: new Date(date),
-      type,
-      notes
+      date,
+      category
     });
-    
+
     await expense.save();
-    
-    // Check if user is approaching budget limit
-    await checkBudgetLimit(userId);
-    
     res.status(201).json(expense);
   } catch (error) {
     console.error('Error adding expense:', error);
@@ -56,44 +44,26 @@ router.post('/add-expense', authCheck, async (req, res) => {
   }
 });
 
-// Helper function to check budget limit and send alert if needed
-async function checkBudgetLimit(userId) {
+// Delete an expense
+router.delete('/expenses/:id', authCheck, async (req, res) => {
   try {
-    // Get user's budget
-    const budget = await Budget.findOne({ userId });
-    if (!budget) return; // No budget set
+    const expense = await Expense.findById(req.params.id);
     
-    // Calculate current month's expenses
-    const startOfMonth = new Date();
-    startOfMonth.setDate(1);
-    startOfMonth.setHours(0, 0, 0, 0);
-    
-    const endOfMonth = new Date();
-    endOfMonth.setMonth(endOfMonth.getMonth() + 1);
-    endOfMonth.setDate(0);
-    endOfMonth.setHours(23, 59, 59, 999);
-    
-    const expenses = await Expense.find({
-      userId,
-      date: { $gte: startOfMonth, $lte: endOfMonth }
-    });
-    
-    const totalSpent = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-    const percentUsed = (totalSpent / budget.amount) * 100;
-    
-    // If over 90% of budget, send alert
-    if (percentUsed >= 90) {
-      // Get user email from Firebase
-      const userRecord = await admin.auth().getUser(userId);
-      const userEmail = userRecord.email;
-      
-      if (userEmail) {
-        await sendBudgetAlert(userEmail, budget.amount, totalSpent, percentUsed);
-      }
+    if (!expense) {
+      return res.status(404).json({ message: 'Expense not found' });
     }
+    
+    // Check if the expense belongs to the user
+    if (expense.userId !== req.user.uid) {
+      return res.status(403).json({ message: 'Not authorized' });
+    }
+    
+    await expense.remove();
+    res.json({ message: 'Expense removed' });
   } catch (error) {
-    console.error('Error checking budget limit:', error);
+    console.error('Error deleting expense:', error);
+    res.status(500).json({ message: 'Server error' });
   }
-}
+});
 
 module.exports = router;

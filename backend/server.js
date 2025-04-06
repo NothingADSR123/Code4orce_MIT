@@ -9,6 +9,7 @@ const authRoutes = require('./routes/authRoutes');
 dotenv.config();
 const app = express();
 
+// Enable CORS for frontend
 app.use(cors());
 app.use(express.json());
 

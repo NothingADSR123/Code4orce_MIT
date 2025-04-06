@@ -5,8 +5,7 @@
 const classifyExpense = (category) => {
   // Define categories that are considered needs
   const needCategories = [
-    'groceries', 'rent', 'utilities', 'healthcare', 'insurance', 
-    'transportation', 'education', 'debt'
+    'food', 'home', 'transportation'
   ];
   
   // Convert to lowercase for case-insensitive comparison

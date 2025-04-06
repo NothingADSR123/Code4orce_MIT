@@ -3,9 +3,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const Goals = () => {
+  // Add state variables for category and target date
   const [goals, setGoals] = useState([]);
   const [newGoal, setNewGoal] = useState('');
   const [targetAmount, setTargetAmount] = useState('');
+  const [goalCategory, setGoalCategory] = useState('Savings');
+  const [targetDate, setTargetDate] = useState(new Date().toISOString().split('T')[0]);
   const [showScratchCard, setShowScratchCard] = useState(false);
   const [isScratched, setIsScratched] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -131,27 +134,43 @@ const Goals = () => {
         transition={{ duration: 0.3 }}
       >
         <h2 className="text-xl font-semibold mb-4">Set New Goal</h2>
-        <div className="flex gap-4">
-          <input
-            type="text"
-            value={newGoal}
-            onChange={(e) => setNewGoal(e.target.value)}
-            placeholder="Goal name"
-            className="flex-1 p-2 border rounded-md"
-          />
-          <input
-            type="number"
-            value={targetAmount}
-            onChange={(e) => setTargetAmount(e.target.value)}
-            placeholder="Target amount"
-            className="flex-1 p-2 border rounded-md"
-          />
-          <button
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="goalName" className="block text-sm font-medium text-gray-700 mb-1">Goal Name</label>
+            <input
+              type="text"
+              id="goalName"
+              value={newGoal}
+              onChange={(e) => setNewGoal(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#4461F2] focus:border-[#4461F2] text-black"
+              placeholder="e.g., New Car, Emergency Fund"
+            />
+          </div>
+          <div>
+            <label htmlFor="targetAmount" className="block text-sm font-medium text-gray-700 mb-1">Target Amount ($)</label>
+            <input
+              type="number"
+              id="targetAmount"
+              value={targetAmount}
+              onChange={(e) => setTargetAmount(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#4461F2] focus:border-[#4461F2] text-black"
+              placeholder="e.g., 5000"
+              min="1"
+            />
+          </div>
+        </div>
+        <div className="mt-6 flex justify-end">
+          <motion.button
             onClick={handleAddGoal}
-            className="px-4 py-2 bg-[#4461F2] text-white rounded-md hover:bg-blue-600 transition-colors"
+            className="px-6 py-2 bg-[#4461F2] text-white rounded-md hover:bg-blue-600 transition-colors flex items-center gap-2"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
             Add Goal
-          </button>
+          </motion.button>
         </div>
       </motion.div>
 
@@ -181,11 +200,11 @@ const Goals = () => {
                 <span>Progress</span>
                 <span>${goal.current} / ${goal.target}</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2.5">
+              <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
                 <motion.div
                   className="bg-[#4461F2] h-2.5 rounded-full"
                   initial={{ width: 0 }}
-                  animate={{ width: `${(goal.current / goal.target) * 100}%` }}
+                  animate={{ width: `${Math.min((goal.current / goal.target) * 100, 100)}%` }}
                   transition={{ duration: 0.5 }}
                 />
               </div>

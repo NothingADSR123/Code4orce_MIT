@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Budget = require('../models/Budget'); // Add this
+const Expense = require('../models/Expense'); // Add this
 
 // Register a new user
 router.post('/register', async (req, res) => {
@@ -29,6 +31,49 @@ router.post('/register', async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
+    
+    // Create initial budget for the user
+    const initialBudget = new Budget({
+      userId: user._id.toString(),
+      amount: 1000, // Default monthly budget
+      period: 'monthly'
+    });
+    await initialBudget.save();
+    
+    // Create sample expenses for the user
+    const currentDate = new Date();
+    const month = currentDate.getMonth();
+    const year = currentDate.getFullYear();
+    
+    // Sample expense categories
+    const categories = ['food', 'home', 'entertainment', 'shopping', 'transportation'];
+    
+    // Create a few sample expenses for the current month
+    const sampleExpenses = [
+      {
+        userId: user._id.toString(),
+        title: 'Groceries',
+        amount: 75.50,
+        date: `${year}-${String(month + 1).padStart(2, '0')}-05`,
+        category: 'food'
+      },
+      {
+        userId: user._id.toString(),
+        title: 'Electricity Bill',
+        amount: 120.00,
+        date: `${year}-${String(month + 1).padStart(2, '0')}-10`,
+        category: 'home'
+      },
+      {
+        userId: user._id.toString(),
+        title: 'Movie Night',
+        amount: 35.00,
+        date: `${year}-${String(month + 1).padStart(2, '0')}-15`,
+        category: 'entertainment'
+      }
+    ];
+    
+    await Expense.insertMany(sampleExpenses);
     
     res.status(201).json({
       message: 'User created successfully',
