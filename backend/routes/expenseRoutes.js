@@ -37,12 +37,63 @@ router.post('/expenses', authCheck, async (req, res) => {
     });
 
     await expense.save();
-    res.status(201).json(expense);
+    
+    // Check for spending alerts after adding a new expense
+    const alerts = await checkSpendingAlerts(userId, category);
+    
+    res.status(201).json({ 
+      expense,
+      alerts // Include any triggered alerts in the response
+    });
   } catch (error) {
     console.error('Error adding expense:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+// Helper function to check for spending alerts
+async function checkSpendingAlerts(userId, category) {
+  try {
+    const alerts = [];
+    const now = new Date();
+    
+    // Check weekly spending by category
+    const weekStart = new Date(now);
+    weekStart.setDate(now.getDate() - 7); // 7 days ago
+    
+    const weeklyExpenses = await Expense.find({
+      userId,
+      category,
+      date: { $gte: weekStart.toISOString().split('T')[0] }
+    });
+    
+    const weeklyTotal = weeklyExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+    
+    // Set thresholds for different categories
+    const thresholds = {
+      food: 2000,
+      entertainment: 1500,
+      shopping: 3000,
+      transportation: 1000,
+      home: 5000
+    };
+    
+    // Check if spending exceeds threshold
+    if (weeklyTotal >= thresholds[category]) {
+      alerts.push({
+        type: 'weekly',
+        category,
+        amount: weeklyTotal,
+        message: `You've spent ₹${weeklyTotal} on ${category} this week!`
+      });
+    }
+    
+    return alerts;
+  } catch (error) {
+    console.error('Error checking spending alerts:', error);
+    return [];
+  }
+}
 
 // Delete an expense
 router.delete('/expenses/:id', authCheck, async (req, res) => {
@@ -62,6 +113,56 @@ router.delete('/expenses/:id', authCheck, async (req, res) => {
     res.json({ message: 'Expense removed' });
   } catch (error) {
     console.error('Error deleting expense:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Get spending alerts for a user
+router.get('/expenses/alerts', authCheck, async (req, res) => {
+  try {
+    const userId = req.user.uid;
+    const alerts = [];
+    const now = new Date();
+    
+    // Get all categories
+    const categories = ["food", "home", "entertainment", "shopping", "transportation"];
+    
+    // Check weekly spending for each category
+    for (const category of categories) {
+      const weekStart = new Date(now);
+      weekStart.setDate(now.getDate() - 7);
+      
+      const weeklyExpenses = await Expense.find({
+        userId,
+        category,
+        date: { $gte: weekStart.toISOString().split('T')[0] }
+      });
+      
+      const weeklyTotal = weeklyExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+      
+      // Set thresholds for different categories
+      const thresholds = {
+        food: 2000,
+        entertainment: 1500,
+        shopping: 3000,
+        transportation: 1000,
+        home: 5000
+      };
+      
+      // Check if spending exceeds threshold
+      if (weeklyTotal >= thresholds[category]) {
+        alerts.push({
+          type: 'weekly',
+          category,
+          amount: weeklyTotal,
+          message: `You've spent ₹${weeklyTotal} on ${category} this week!`
+        });
+      }
+    }
+    
+    res.json(alerts);
+  } catch (error) {
+    console.error('Error fetching spending alerts:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });

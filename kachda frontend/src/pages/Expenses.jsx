@@ -38,6 +38,12 @@ const Expense = () => {
         });
         setExpenses(response.data);
         processChartData(response.data);
+        
+        // Fetch alerts
+        const alertsResponse = await axios.get('http://localhost:5000/api/expenses/alerts', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setAlerts(alertsResponse.data);
       } catch (error) {
         console.error('Failed to fetch expenses:', error);
         if (error.response && error.response.status === 401) {
@@ -120,8 +126,13 @@ const Expense = () => {
       });
       
       // Add the new expense to the state
-      const addedExpense = response.data;
+      const addedExpense = response.data.expense;
       setExpenses([...expenses, addedExpense]);
+      
+      // Check for alerts from the response
+      if (response.data.alerts && response.data.alerts.length > 0) {
+        setAlerts(response.data.alerts);
+      }
       
       // Reset the form
       setNewExpense({
@@ -235,7 +246,7 @@ const Expense = () => {
                   <option value="transportation">Transportation</option>
                   <option value="entertainment">Entertainment</option>
                   <option value="shopping">Shopping</option>
-                  <option value="housing">Housing</option>
+                  <option value="home">Housing</option>
                 </select>
               </div>
               <div>

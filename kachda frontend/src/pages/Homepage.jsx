@@ -66,7 +66,7 @@ const Home = () => {
 
   return (
     <motion.div 
-      className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 font-['Inter']"
+      className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-900 font-['Inter']"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}

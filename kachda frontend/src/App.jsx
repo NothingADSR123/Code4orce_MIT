@@ -15,11 +15,29 @@ import Home from './pages/Homepage';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
+// Import the ProgressBar component
+import ProgressBar from './components/progressBar';
 import './App.css';
 
 // Placeholder components for new routes
 const Insights = () => <div className="p-4 ml-64 mt-16">Insights page coming soon</div>;
-const Settings = () => <div className="p-4 ml-64 mt-16">Settings page coming soon</div>;
+
+// Example Settings page with ProgressBar
+const Settings = () => (
+  <div className="p-4 ml-64 mt-16">
+    <h1 className="text-2xl font-bold mb-6">Settings</h1>
+    <div className="bg-white p-6 rounded-lg shadow-md">
+      <h2 className="text-lg font-semibold mb-4">Profile Completion</h2>
+      <ProgressBar percentage={75} label="Profile completion status" />
+      
+      <h2 className="text-lg font-semibold mt-8 mb-4">Budget Utilization</h2>
+      <ProgressBar percentage={45} label="Monthly budget used" />
+      
+      <h2 className="text-lg font-semibold mt-8 mb-4">Savings Goal</h2>
+      <ProgressBar percentage={30} label="Progress towards savings goal" />
+    </div>
+  </div>
+);
 
 // Privacy and Terms pages with proper layout
 const PrivacyPolicy = () => (
