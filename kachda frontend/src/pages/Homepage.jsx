@@ -405,7 +405,6 @@ const Home = () => {
         <ul className="space-y-2">
           <li>
             <motion.button 
-              onClick={() => navigate('/privacy')} 
               className="text-gray-400 hover:text-white transition-colors font-['Inter']"
               whileHover={{ x: 5 }}
             >
@@ -414,7 +413,6 @@ const Home = () => {
           </li>
           <li>
             <motion.button 
-              onClick={() => navigate('/terms')} 
               className="text-gray-400 hover:text-white transition-colors font-['Inter']"
               whileHover={{ x: 5 }}
             >
