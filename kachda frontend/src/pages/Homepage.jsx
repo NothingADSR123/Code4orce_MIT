@@ -381,74 +381,75 @@ const Home = () => {
       </div>
 
       {/* Footer */}
-      <motion.footer 
-        className="bg-gray-900 text-white py-12"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <motion.div variants={itemVariants}>
-              <h3 className="text-lg font-semibold mb-4 font-['Poppins'] tracking-tight">MindSpend</h3>
-              <p className="text-gray-400 leading-relaxed">Your intelligent financial companion for smarter spending and better savings.</p>
-            </motion.div>
-            <motion.div variants={itemVariants}>
-              <h3 className="text-lg font-semibold mb-4 font-['Poppins'] tracking-tight">Legal</h3>
-              <ul className="space-y-2">
-                <li>
-                  <motion.button 
-                    onClick={() => navigate('/privacy')} 
-                    className="text-gray-400 hover:text-white transition-colors font-['Inter']"
-                    whileHover={{ x: 5 }}
-                  >
-                    Privacy Policy
-                  </motion.button>
-                </li>
-                <li>
-                  <motion.button 
-                    onClick={() => navigate('/terms')} 
-                    className="text-gray-400 hover:text-white transition-colors font-['Inter']"
-                    whileHover={{ x: 5 }}
-                  >
-                    Terms of Service
-                  </motion.button>
-                </li>
-              </ul>
-            </motion.div>
-            <motion.div variants={itemVariants}>
-  <h3 className="text-lg font-semibold mb-4 font-['Poppins'] tracking-tight">Contact</h3>
-  
-  <div className="flex space-x-4">
-    {/* Instagram Icon */}
-    <FiInstagram className="text-gray-400 text-2xl hover:text-[#E4405F]" />
-    
-    {/* Facebook Icon */}
-    <FiFacebook className="text-gray-400 text-2xl hover:text-[#3b5998]" />
-    
-    {/* Twitter Icon */}
-    <FiTwitter className="text-gray-400 text-2xl hover:text-[#1DA1F2]" />
-  </div>
-</motion.div>
-          </motion.div>
-          <motion.div 
-            className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <p className="font-['Inter']">&copy; {currentYear} MindSpend. All rights reserved.</p>
-          </motion.div>
+<motion.footer 
+  className="bg-gray-900 text-white py-12"
+  initial={{ opacity: 0, y: 50 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8 }}
+  viewport={{ once: true }}
+>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <motion.div 
+      className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center" // Added 'text-center'
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+    >
+      <motion.div variants={itemVariants}>
+        <h3 className="text-lg font-semibold mb-4 font-['Poppins'] tracking-tight">MindSpend</h3>
+        <p className="text-gray-400 leading-relaxed">Your intelligent financial companion for smarter spending and better savings.</p>
+      </motion.div>
+      <motion.div variants={itemVariants}>
+        <h3 className="text-lg font-semibold mb-4 font-['Poppins'] tracking-tight">Legal</h3>
+        <ul className="space-y-2">
+          <li>
+            <motion.button 
+              onClick={() => navigate('/privacy')} 
+              className="text-gray-400 hover:text-white transition-colors font-['Inter']"
+              whileHover={{ x: 5 }}
+            >
+              Privacy Policy
+            </motion.button>
+          </li>
+          <li>
+            <motion.button 
+              onClick={() => navigate('/terms')} 
+              className="text-gray-400 hover:text-white transition-colors font-['Inter']"
+              whileHover={{ x: 5 }}
+            >
+              Terms of Service
+            </motion.button>
+          </li>
+        </ul>
+      </motion.div>
+      <motion.div variants={itemVariants}>
+        <h3 className="text-lg font-semibold mb-4 font-['Poppins'] tracking-tight">Contact</h3>
+        
+        <div className="flex justify-center space-x-4"> {/* Added 'justify-center' */}
+          {/* Instagram Icon */}
+          <FiInstagram className="text-gray-400 text-2xl hover:text-[#E4405F]" />
+          
+          {/* Facebook Icon */}
+          <FiFacebook className="text-gray-400 text-2xl hover:text-[#3b5998]" />
+          
+          {/* Twitter Icon */}
+          <FiTwitter className="text-gray-400 text-2xl hover:text-[#1DA1F2]" />
         </div>
-      </motion.footer>
+      </motion.div>
+    </motion.div>
+    <motion.div 
+      className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400" // Added 'text-center'
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ delay: 0.5 }}
+      viewport={{ once: true }}
+    >
+      <p className="font-['Inter']">&copy; {currentYear} MindSpend. All rights reserved.</p>
+    </motion.div>
+  </div>
+</motion.footer>
+
     </motion.div>
   );
 };
