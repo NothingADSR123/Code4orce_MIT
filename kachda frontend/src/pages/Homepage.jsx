@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import feeLogo from '../assets/feef.png'; // Import the image
+
 
 const Home = () => {
   const navigate = useNavigate();
@@ -80,13 +82,23 @@ const Home = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <motion.span 
-              className="text-2xl font-bold text-[#4461F2] font-['Poppins'] tracking-tight"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              MindSpend
-            </motion.span>
+          <motion.div 
+  className="flex items-center space-x-2" // Ensure the text and logo are aligned horizontally
+>
+  <img 
+    src={feeLogo} // Replace with your logo path
+    alt="Logo"
+    className="h-8 w-8" // Adjust size as needed
+  />
+  <motion.span 
+    className="text-2xl font-bold text-[#4461F2] font-['Poppins'] tracking-tight"
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+  >
+    MindSpend
+  </motion.span>
+</motion.div>
+
             
             {isLoggedIn ? (
               <div className="flex space-x-4">
