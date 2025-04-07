@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { FiInstagram, FiFacebook, FiTwitter } from 'react-icons/fi'; // Import the icons
 import feeLogo from '../assets/feef.png'; // Import the image
+const currentYear = new Date().getFullYear();
+
 
 
 const Home = () => {
@@ -421,10 +424,19 @@ const Home = () => {
               </ul>
             </motion.div>
             <motion.div variants={itemVariants}>
-              <h3 className="text-lg font-semibold mb-4 font-['Poppins'] tracking-tight">Contact</h3>
-              <p className="text-gray-400 leading-relaxed">Email: support@mindspend.com</p>
-              <p className="text-gray-400 leading-relaxed">Phone: +1 (555) 123-4567</p>
-            </motion.div>
+  <h3 className="text-lg font-semibold mb-4 font-['Poppins'] tracking-tight">Contact</h3>
+  
+  <div className="flex space-x-4">
+    {/* Instagram Icon */}
+    <FiInstagram className="text-gray-400 text-2xl hover:text-[#E4405F]" />
+    
+    {/* Facebook Icon */}
+    <FiFacebook className="text-gray-400 text-2xl hover:text-[#3b5998]" />
+    
+    {/* Twitter Icon */}
+    <FiTwitter className="text-gray-400 text-2xl hover:text-[#1DA1F2]" />
+  </div>
+</motion.div>
           </motion.div>
           <motion.div 
             className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400"
@@ -433,7 +445,7 @@ const Home = () => {
             transition={{ delay: 0.5 }}
             viewport={{ once: true }}
           >
-            <p className="font-['Inter']">&copy; 2024 MindSpend. All rights reserved.</p>
+            <p className="font-['Inter']">&copy; {currentYear} MindSpend. All rights reserved.</p>
           </motion.div>
         </div>
       </motion.footer>
