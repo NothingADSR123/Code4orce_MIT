@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-import { FiInstagram, FiFacebook, FiTwitter } from 'react-icons/fi'; // Import the icons
+import { FiInstagram, FiFacebook , FiX} from 'react-icons/fi'; // Import the icons
 import feeLogo from '../assets/feef.png'; // Import the image
 const currentYear = new Date().getFullYear();
 
@@ -380,7 +380,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Footer */}
+     {/* Footer */}
 <motion.footer 
   className="bg-gray-900 text-white py-12"
   initial={{ opacity: 0, y: 50 }}
@@ -390,7 +390,7 @@ const Home = () => {
 >
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <motion.div 
-      className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center" // Added 'text-center'
+      className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center"
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
@@ -405,6 +405,7 @@ const Home = () => {
         <ul className="space-y-2">
           <li>
             <motion.button 
+              onClick={() => navigate('/privacy')} 
               className="text-gray-400 hover:text-white transition-colors font-['Inter']"
               whileHover={{ x: 5 }}
             >
@@ -413,6 +414,7 @@ const Home = () => {
           </li>
           <li>
             <motion.button 
+              onClick={() => navigate('/terms')} 
               className="text-gray-400 hover:text-white transition-colors font-['Inter']"
               whileHover={{ x: 5 }}
             >
@@ -424,20 +426,20 @@ const Home = () => {
       <motion.div variants={itemVariants}>
         <h3 className="text-lg font-semibold mb-4 font-['Poppins'] tracking-tight">Contact</h3>
         
-        <div className="flex justify-center space-x-4"> {/* Added 'justify-center' */}
+        <div className="flex justify-center space-x-4">
           {/* Instagram Icon */}
           <FiInstagram className="text-gray-400 text-2xl hover:text-[#E4405F]" />
           
           {/* Facebook Icon */}
           <FiFacebook className="text-gray-400 text-2xl hover:text-[#3b5998]" />
           
-          {/* Twitter Icon */}
-          <FiTwitter className="text-gray-400 text-2xl hover:text-[#1DA1F2]" />
+          {/* X Icon (Replacing Twitter) */}
+          <FiX className="text-gray-400 text-2xl hover:text-[#1DA1F2]" /> {/* Added X icon */}
         </div>
       </motion.div>
     </motion.div>
     <motion.div 
-      className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400" // Added 'text-center'
+      className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ delay: 0.5 }}
@@ -447,6 +449,7 @@ const Home = () => {
     </motion.div>
   </div>
 </motion.footer>
+
 
     </motion.div>
   );
