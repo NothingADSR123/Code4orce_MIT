@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXTwitter } from '@fortawesome/free-brands-svg-icons'; // Import the X Twitter icon
+
 import { FiInstagram, FiFacebook , FiX} from 'react-icons/fi'; // Import the icons
 import feeLogo from '../assets/feef.png'; // Import the image
 const currentYear = new Date().getFullYear();
@@ -380,7 +383,8 @@ const Home = () => {
         </div>
       </div>
 
-     {/* Footer */}
+
+{/* Footer */}
 <motion.footer 
   className="bg-gray-900 text-white py-12"
   initial={{ opacity: 0, y: 50 }}
@@ -405,7 +409,6 @@ const Home = () => {
         <ul className="space-y-2">
           <li>
             <motion.button 
-              onClick={() => navigate('/privacy')} 
               className="text-gray-400 hover:text-white transition-colors font-['Inter']"
               whileHover={{ x: 5 }}
             >
@@ -414,7 +417,6 @@ const Home = () => {
           </li>
           <li>
             <motion.button 
-              onClick={() => navigate('/terms')} 
               className="text-gray-400 hover:text-white transition-colors font-['Inter']"
               whileHover={{ x: 5 }}
             >
@@ -433,8 +435,11 @@ const Home = () => {
           {/* Facebook Icon */}
           <FiFacebook className="text-gray-400 text-2xl hover:text-[#3b5998]" />
           
-          {/* X Icon (Replacing Twitter) */}
-          <FiX className="text-gray-400 text-2xl hover:text-[#1DA1F2]" /> {/* Added X icon */}
+          {/* X Twitter Icon */}
+          <FontAwesomeIcon 
+            icon={faXTwitter} 
+            className="text-gray-400 text-2xl hover:text-[#1DA1F2]" 
+          />
         </div>
       </motion.div>
     </motion.div>
@@ -449,6 +454,7 @@ const Home = () => {
     </motion.div>
   </div>
 </motion.footer>
+
 
 
     </motion.div>
