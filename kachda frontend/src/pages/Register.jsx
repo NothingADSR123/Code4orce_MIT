@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -50,14 +51,14 @@ const Register = () => {
       setIsLoading(true);
       try {
         // Implement actual registration logic here
-        const response = await axios.post('http://localhost:5000/api/auth/register', {
+        const response = await axios.post(`${API_URL}/api/auth/register`, {
           name: formData.name,
           email: formData.email,
           password: formData.password
         });
         
         // Auto login after registration
-        const loginResponse = await axios.post('http://localhost:5000/api/auth/login', {
+        const loginResponse = await axios.post(`${API_URL}/api/auth/login`, {
           email: formData.email,
           password: formData.password
         });

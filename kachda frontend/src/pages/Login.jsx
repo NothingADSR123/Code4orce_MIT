@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ const Login = () => {
       setIsLoading(true);
       try {
         // Implement actual login logic with backend
-        const response = await axios.post('http://localhost:5000/api/auth/login', {
+        const response = await axios.post(`${API_URL}/api/auth/login`, {
           email: formData.email,
           password: formData.password
         });
