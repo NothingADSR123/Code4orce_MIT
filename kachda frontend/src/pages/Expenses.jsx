@@ -7,6 +7,7 @@ import {
 } from 'recharts';
 import Sidebar from '../components/Sidebar';
 import { motion } from 'framer-motion';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const Expense = () => {
   const navigate = useNavigate();
@@ -33,14 +34,14 @@ const Expense = () => {
           navigate('/login');
           return;
         }
-        const response = await axios.get('http://localhost:5000/api/expenses', {
+        const response = await axios.get(`${API_URL}/api/expenses`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setExpenses(response.data);
         processChartData(response.data);
         
         // Fetch alerts
-        const alertsResponse = await axios.get('http://localhost:5000/api/expenses/alerts', {
+        const alertsResponse = await axios.get(`${API_URL}/api/expenses/alerts`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setAlerts(alertsResponse.data);
@@ -114,7 +115,7 @@ const Expense = () => {
   const handleAddExpense = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/api/expenses', {
+      const response = await axios.post(`${API_URL}/api/expenses`, {
         title: newExpense.title,
         amount: parseFloat(newExpense.amount),
         category: newExpense.category.toLowerCase(),
@@ -158,7 +159,7 @@ const Expense = () => {
         navigate('/login');
         return;
       }
-      await axios.delete(`http://localhost:5000/api/expenses/${id}`, {
+      await axios.delete(`${API_URL}/api/expenses/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const updatedExpenses = expenses.filter(expense => expense._id !== id);
