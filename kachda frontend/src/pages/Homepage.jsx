@@ -8,6 +8,7 @@ import { faXTwitter } from '@fortawesome/free-brands-svg-icons'; // Import the X
 import { FiInstagram, FiFacebook , FiX} from 'react-icons/fi'; // Import the icons
 import feeLogo from '../assets/feef.png'; // Import the image
 const currentYear = new Date().getFullYear();
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 
 
@@ -39,7 +40,7 @@ const Home = () => {
     // Fetch stats from backend
     const fetchStats = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/stats');
+        const response = await axios.get(`${API_URL}/api/stats`);
         setStats(response.data);
       } catch (error) {
         console.error('Failed to fetch stats:', error);
