@@ -7,7 +7,7 @@ import {
 } from 'recharts';
 import Sidebar from '../components/Sidebar';
 import { motion } from 'framer-motion';
-
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const Dashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
@@ -26,12 +26,13 @@ const Dashboard = () => {
         }
 
         // Fetch expenses data
-        const expensesResponse = await axios.get('http://localhost:5000/api/expenses', {
+        
+        const expensesResponse = await axios.get(`${API_URL}/api/expenses`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
         // Fetch budget data
-        const budgetResponse = await axios.get('http://localhost:5000/api/budget', {
+        const budgetResponse = await axios.get(`${API_URL}/api/budget`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
