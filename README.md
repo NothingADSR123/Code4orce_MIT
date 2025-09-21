@@ -6,6 +6,43 @@ MindSpend is a comprehensive personal finance management application designed to
   <img src="https://github.com/NothingADSR123/Code4orce_MIT/blob/057a6960fae4b752b8cfd9689d275d8410805aff/kachda%20frontend/src/assets/feef.png?raw=true" alt="MindSpend Logo" width="200"/>
 </p>
 
+## Contributors
+
+<p align = "center"> This project wouldn’t have been possible without the **dedication, teamwork, and creativity** of our amazing team 🚀 </p> 
+
+<table align="center">
+  <tr align="center">
+    <td align="center ">
+      <a href="https://github.com/ShreyaSriranga">
+        <img src="https://avatars.githubusercontent.com/ShreyaSriranga" width="80" style="border-radius:50%" alt="Your Name"/><br/>
+        <sub><b>Shreya Sriranga</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/SpaceIsVoidless">
+        <img src="https://avatars.githubusercontent.com/SpaceIsVoidless" width="80" style="border-radius:50%" alt="Teammate 1"/><br/>
+        <sub><b>SpaceIsVoidless</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/sirishax">
+        <img src="https://avatars.githubusercontent.com/sirishax" width="80" style="border-radius:50%" alt="Teammate 2"/><br/>
+        <sub><b>sirishax</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Lohithsai06">
+        <img src="https://avatars.githubusercontent.com/Lohithsai06" width="80" style="border-radius:50%" alt="Teammate 3"/><br/>
+        <sub><b>Lohithsai06</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>
+
+✨ Each contributor played a vital role in making **MindSpend** a success – from design, development, backend, database, to deployment.
+
+
+
 
 ## Features
 
