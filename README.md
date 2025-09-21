@@ -8,7 +8,7 @@ MindSpend is a comprehensive personal finance management application designed to
 
 ## Contributors
 
-<p align = "center"> This project wouldn’t have been possible without the **dedication, teamwork, and creativity** of our amazing team 🚀 </p> 
+<p align = "center"> This project wouldn’t have been possible without the Dedication, Teamwork, and Creativity of our amazing team 🚀 </p> 
 
 <table align="center">
   <tr align="center">
